@@ -1,0 +1,27 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<MultiSelect StaticList="MyTags" SelectionChanged="TagsChanged" ></MultiSelect>
+@if (SelectedTags is object)
+{
+    <ul>
+        @foreach (var item in SelectedTags)
+        {
+            <li>@item</li>
+        }
+    </ul>
+}
+@code
+{
+    //List<string> MyTags = new List<string> { "☎ Telephone", "📧 Email", "📓 NoteBook", };
+    List<string> MyTags = Enumerable.Range(1,1000).Select(i=>$"Item #{i}").ToList();
+    List<string> SelectedTags = new List<string>();
+    void TagsChanged(IList<string> selected)
+    {
+        SelectedTags = selected.ToList();
+        StateHasChanged();
+    }
+}

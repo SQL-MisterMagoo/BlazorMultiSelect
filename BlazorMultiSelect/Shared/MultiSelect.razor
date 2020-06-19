@@ -1,0 +1,78 @@
+﻿@typeparam T
+@if (MainClass == "multi-select")
+{
+    <style @key=@("styles")>
+
+        .multi-select {
+            padding: 1em;
+            border: solid 2px gray;
+            border-radius: 5px;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+            .multi-select input {
+                line-height: 2.2em;
+            }
+
+        .multi-select-tags {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+            .multi-select-tags span {
+                background-color: gray;
+                color: white;
+                border: solid thin black;
+                border-radius: 4px;
+                padding: 0.2em 0.3em;
+                margin-inline-end: 0.2em;
+                margin-bottom: 0.5em;
+            }
+
+                .multi-select-tags span button {
+                    border: none;
+                    padding: 0.3em;
+                    margin: 10px 0px;
+                    margin-inline-start: 10px;
+                    line-height: 0.7rem;
+                    color: lightgray;
+                    background-color: gray;
+                }
+
+                    .multi-select-tags span button:hover, .multi-select-tags span button:active {
+                        background-color: darkgray;
+                        border-radius: 5px;
+                    }
+    </style>
+}
+<div @key="this" class="@MainClass">
+    <label for="@InputId">@LabelText</label>
+    <div class="@TagsClass">
+        @foreach (var tag in selected)
+        {
+            <span @key="tag">@tag.Label<button @onclick="tag.RemoveMe">X</button></span>
+        }
+    </div>
+    <input @bind="Choice" id="@InputId" autocomplete="true" list="@ListId" />
+</div>
+<datalist id="@ListId">
+    @for (int i = 0; i < things.Count; i++)
+    {
+        var local = i;
+        if (!selected.Contains(things[local]))
+        {
+            <option value="@things[local].Value">@things[local].Label</option>
+        }
+    }
+</datalist>
+
+<script suppress-error="BL9992">
+    window.MS = {
+        setFocus(el) {
+            if (el.focus) el.focus();
+            if (document.getElementById(el).focus) document.getElementById(el).focus();
+        }
+    }
+</script>
